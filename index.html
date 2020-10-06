@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="Ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="test/bootstrap.min.css">
+    <link rel="stylesheet" href="test/style.css">
+    <link rel="shortcut icon" href="/fav.png" type="image/x-icon">
+    <title>Auto SPA</title>
+</head>
+<body>
+    
+<div class="container pt-5" id="app">
+   <p><a href="http://g93739l8.beget.tech">На главную </a></p>
+    <div class="row mb-3">
+        <h1>Авто</h1>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-3">
+            <div class="form-group">
+                <label for="search">Найти авто</label>
+                <input type="text" class="form-control" id="search" placeholder="название или модель"
+                v-model="search"
+                >{{ search }}
+            </div>
+            <hr>
+            <ul>
+                <li 
+                v-for='(car, index) of filteredCars'
+                class="list-group-item list-group-item-action pointer"
+                @click="selectCar(car,index)"
+                :class="{'active': selectCarIndex === index}"
+                >
+                {{ car.name }} - {{ car.model }}
+                </li>
+                
+            </ul>
+        </div>
+        <div class="col-md-9 pt-3">
+            <div class="row">
+                <div class="col-md-6"> 
+                   
+                    <h2>{{ car.name }}</h2>
+                    <img :src="car.image" alt="" class="rounded detail"  >
+                </div>
+                <div class="col-md-6 pt-2">
+                    <h5>Инфа про авто </h5>
+                    <ul>
+                        <li>Модель - <strong>{{ car.model }}</strong></li>
+                        <li>Год - <strong>{{ car.year }}</strong></li>
+                        <li>Владелец - <strong>{{ car.owner }}</strong></li>
+                        <li>Цена - <strong>{{ car.price }}</strong></li>
+                        
+                    </ul>
+                    
+                    <div class="block">
+                       <transition name="phone">
+                           <p v-if="phoneVisibility">{{ car.phone }}</p>
+                       </transition>
+                        
+                    </div>
+                    
+                    <button class="btn btn-outline-success mr-3"  v-on:click="phoneVisibility = !phoneVisibility">{{ phonetext }}</button>
+                    <button class="btn btn-primary " @click="modalVisibility = true" >Купить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <p ><a href="http://g93739l8.beget.tech/test/test/test/">Еще одно задание на VUE</a></p>
+    
+    <div class="row pt-3" v-if="logs.length !== 0" >
+        <div class="col-md-12">
+            <ul class="list-group">
+                <li 
+                v-for="log in logs"
+                :class="{
+                'list-group-item-secondary': log.type === 'cnl',
+                'list-group-item-success': log.type === 'ok'
+                }"
+                class="list-group-item list-group-item-secondary">{{ log.text }} {{ log.date | date }} </li>
+            </ul>
+        </div>
+    </div>
+    
+    <transition name="modal">
+           <div class="modal fade show" v-if="modalVisibility" tabindex="-1" role="dialog">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Хочешь купить?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                     @click="modalVisibility = false"
+                     >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Выбрали авто - <strong>{{ car.name }}</strong></p>
+                                <ul>
+                                    <li>Модель - <strong>{{ car.model }}</strong></li>
+                                    <li>Год - <strong>{{ car.year }}</strong></li>
+                                    <li>Владелец - <strong>{{ car.owner }}</strong></li>
+                                    <li>Телефон - <strong>{{ car.phone }}</strong></li>
+                                    <li>Город - <strong>{{ car.city }}</strong></li>
+                                </ul>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"
+                    @click="newOrder"
+                    >Купить</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" 
+                    @click="cancelOrder"
+                    >Отказ</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+    </transition>
+    
+ 
+<transition name="fade">    
+    <div class="modal-backdrop fade show" v-if="modalVisibility"></div>
+ </transition>
+</div>
+
+
+
+
+<script src="test/vue.js"></script>
+    
+    
+    
+    <script src="test/script.js"></script>
+</body>
+</html>
+
+
+
+
